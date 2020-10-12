@@ -1,0 +1,2 @@
+rootProject.name = "Dynamic UI"
+include ':app'
