@@ -2,19 +2,26 @@ package com.example.dynamicui
 
 import Json4Kotlin_Base
 import android.os.Bundle
+import android.util.Log
 import android.view.Gravity
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.widget.NestedScrollView
+import com.example.dynamicui.services.ApiClient
+import com.example.dynamicui.services.ApiService
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.gson.GsonBuilder
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
     private val TAG = "MainActivity"
+    private lateinit var nestedScrollView: NestedScrollView
+    private lateinit var linearLayout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,10 +30,10 @@ class MainActivity : AppCompatActivity() {
         // sets the light theme to true
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        val nestedScrollView: NestedScrollView = findViewById(R.id.nestedScrollView)
+        nestedScrollView = findViewById(R.id.nestedScrollView)
 //        val linearLayout: LinearLayout = findViewById(R.id.linearLayout)
 
-        val linearLayout: LinearLayout = LinearLayout(this)
+        linearLayout = LinearLayout(this)
         linearLayout.orientation = LinearLayout.VERTICAL;
 
 //        val linearLayoutParams: ViewGroup.MarginLayoutParams =
@@ -46,17 +53,47 @@ class MainActivity : AppCompatActivity() {
 
         params.setMargins(40, 20, 40, 20)
 
-        val json = getJSON()
-        val gson = GsonBuilder().create()
-        val response = gson.fromJson(json, Json4Kotlin_Base::class.java)
+//        val json = getJSON()
+//        val gson = GsonBuilder().create()
+//        val response = gson.fromJson(json, Json4Kotlin_Base::class.java)
 
+//        val response = getJSON()
+
+        val apiService = ApiClient.buildService(ApiService::class.java)
+        val requestCall = apiService.getForm()
+
+        requestCall.enqueue(object : Callback<Json4Kotlin_Base> {
+            override fun onResponse(
+                call: Call<Json4Kotlin_Base>,
+                response: Response<Json4Kotlin_Base>
+            ) {
+                if (response.isSuccessful) {
+                    val res = response.body()!!
+                    Log.i("MainActivity Retrofit", res.toString())
+                    renderUI(res, params, buttonParams)
+                }
+            }
+
+            override fun onFailure(call: Call<Json4Kotlin_Base>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
+
+
+    }
+
+    private fun renderUI(
+        response: Json4Kotlin_Base,
+        params: LinearLayout.LayoutParams,
+        buttonParams: LinearLayout.LayoutParams
+    ) {
         /*
         * Schema
         *
         * id -> view id or key associated with that particular field
         * ViewType -> type of the view like TextView, EditText, CheckBox etc
         * text -> text associate with the view, different ViewTypes can interpret this differently
-        * hintText -> hint text associate witht the view, different ViewTypes can interpret this differently
+        * hintText -> hint text associate with the view, different ViewTypes can interpret this differently
         *
         * */
 
@@ -81,15 +118,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         nestedScrollView.addView(linearLayout)
-
     }
-//
-//    class Response(json: String) : JSONObject(json) {
-//        var form = this.optString("form")
-//        var fields = this.optJSONArray("fields")
-//            ?.let { 0.until(it.length()).map { i -> it.optJSONObject(i) }} // returns an array of JSONObject
-//            ?.map { Fields(it.toString())} // // transforms each JSONObject of the array into Fields
-//    }
 
     private fun getJSON(): String {
         val stringJson = """
