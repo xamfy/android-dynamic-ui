@@ -3,11 +3,11 @@ package com.example.dynamicui
 import Json4Kotlin_Base
 import android.os.Bundle
 import android.view.Gravity
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.widget.NestedScrollView
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -23,10 +23,15 @@ class MainActivity : AppCompatActivity() {
         // sets the light theme to true
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
-        val linearLayout: LinearLayout = findViewById(R.id.linearLayout)
-        val linearLayoutParams: ViewGroup.MarginLayoutParams =
-            linearLayout.layoutParams as ViewGroup.MarginLayoutParams
-        linearLayoutParams.topMargin = 50
+        val nestedScrollView: NestedScrollView = findViewById(R.id.nestedScrollView)
+//        val linearLayout: LinearLayout = findViewById(R.id.linearLayout)
+
+        val linearLayout: LinearLayout = LinearLayout(this)
+        linearLayout.orientation = LinearLayout.VERTICAL;
+
+//        val linearLayoutParams: ViewGroup.MarginLayoutParams =
+//            linearLayout.layoutParams as ViewGroup.MarginLayoutParams
+//        linearLayoutParams.topMargin = 50
 
         val params = LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
@@ -75,6 +80,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        nestedScrollView.addView(linearLayout)
+
     }
 //
 //    class Response(json: String) : JSONObject(json) {
@@ -106,6 +113,108 @@ class MainActivity : AppCompatActivity() {
                         "ViewType":"Button",
                         "text":"Submit",
                         "hintText":""
+                     },
+                     {
+                        "id":"4",
+                        "ViewType":"TextView",
+                        "text":"Email address",
+                        "hintText":""
+                     },
+                     {
+                        "id":"5",
+                        "ViewType":"TextInputLayout",
+                        "text":"",
+                        "hintText":"Please enter your email address"
+                     },
+                     {
+                        "id":"6",
+                        "ViewType":"Button",
+                        "text":"Submit",
+                        "hintText":""
+                     },
+                     {
+                        "id":"7",
+                        "ViewType":"TextView",
+                        "text":"Email address",
+                        "hintText":""
+                     },
+                     {
+                        "id":"8",
+                        "ViewType":"TextInputLayout",
+                        "text":"",
+                        "hintText":"Please enter your email address"
+                     },
+                     {
+                        "id":"9",
+                        "ViewType":"Button",
+                        "text":"Submit",
+                        "hintText":""
+                     },
+                     {
+                        "id":"10",
+                        "ViewType":"TextView",
+                        "text":"Password",
+                        "hintText":""
+                     },
+                     {
+                        "id":"11",
+                        "ViewType":"TextView",
+                        "text":"Email address",
+                        "hintText":""
+                     },
+                     {
+                        "id":"12",
+                        "ViewType":"TextInputLayout",
+                        "text":"",
+                        "hintText":"Please enter your email address"
+                     },
+                     {
+                        "id":"13",
+                        "ViewType":"Button",
+                        "text":"Submit",
+                        "hintText":""
+                     },
+                     {
+                        "id":"14",
+                        "ViewType":"TextView",
+                        "text":"Email address",
+                        "hintText":""
+                     },
+                     {
+                        "id":"15",
+                        "ViewType":"TextInputLayout",
+                        "text":"",
+                        "hintText":"Please enter your email address"
+                     },
+                     {
+                        "id":"16",
+                        "ViewType":"Button",
+                        "text":"Submit",
+                        "hintText":""
+                     },
+                     {
+                        "id":"17",
+                        "ViewType":"TextView",
+                        "text":"Email address",
+                        "hintText":""
+                     },
+                     {
+                        "id":"18",
+                        "ViewType":"TextInputLayout",
+                        "text":"",
+                        "hintText":"Please enter your email address"
+                     },
+                     {
+                        "id":"19",
+                        "ViewType":"Button",
+                        "text":"Submit",
+                        "hintText":""
+                     },
+                     {
+                        "id":"20",
+                        "ViewType":"TextView",
+                        "text":"Password",
+                        "hintText":""
                      }
                   ]
                }
@@ -117,7 +226,10 @@ class MainActivity : AppCompatActivity() {
         return stringJson
     }
 
-    private fun getTextInputLayout(params: LinearLayout.LayoutParams, hintText: String): TextInputLayout {
+    private fun getTextInputLayout(
+        params: LinearLayout.LayoutParams,
+        hintText: String
+    ): TextInputLayout {
         val textInputLayout = TextInputLayout(
             this,
             null,
