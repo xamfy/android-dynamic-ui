@@ -1,0 +1,21 @@
+{
+  "form": {
+    "fields": [
+      {
+        "id": "0",
+        "ViewType": "TextView",
+        "text": "Email address"
+      },
+      {
+        "id": "1",
+        "ViewType": "TextInputLayout",
+        "hint": "Please enter your email address"
+      },
+      {
+        "id": "3",
+        "ViewType": "Button",
+        "text": "Submit"
+      }
+    ]
+  }
+}
